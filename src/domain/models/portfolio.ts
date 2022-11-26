@@ -25,26 +25,14 @@ export class Portfolio {
   }
 
   private constructor(props: Portfolio.Props) {
-    this.#id = props.id;
-    this.#title = props.title;
-    this.#createdAt = props.createdAt;
+    this.id = props.id;
+    this.title = props.title;
+    this.createdAt = props.createdAt;
   }
 
-  public get id(): string {
-    return this.#id;
-  }
-
-  public get title(): string {
-    return this.#title;
-  }
-
-  public get createdAt(): Date {
-    return this.#createdAt;
-  }
-
-  readonly #id: string;
-  readonly #title: string;
-  readonly #createdAt: Date;
+  public readonly id: string;
+  public readonly title: string;
+  public readonly createdAt: Date;
 }
 
 export namespace Portfolio {
