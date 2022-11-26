@@ -5,6 +5,8 @@ export class MockedCreatePortfolio implements CreatePortfolio {
   public execute({
     title,
   }: CreatePortfolio.Params): PromiseEither<Portfolio.Errors, Portfolio> {
-    return Promise.resolve(Portfolio.create({ title }));
+    const response = Portfolio.create({ title });
+    console.log("🚀 ~ MockedCreatePortfolio ~ response", response);
+    return Promise.resolve(response);
   }
 }

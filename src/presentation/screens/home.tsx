@@ -2,19 +2,15 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
-import { MockedCreatePortfolio } from "../../domain";
+import { useAppDispatch } from "../hooks";
+import { createPortfolio } from "../../main/store";
 
 export function Home() {
+  const dispatch = useAppDispatch();
+
   React.useEffect(() => {
-    console.log("logging from Home screen");
-
-    (async () => {
-      const createPortfolio = new MockedCreatePortfolio();
-
-      const response = await createPortfolio.execute({ title: "Lorem Ipsum" });
-      console.log(response.isLeft(), response.isRight(), response.value);
-    })();
-  }, []);
+    dispatch(createPortfolio({ title: "Lorem Ipsum" }));
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>
