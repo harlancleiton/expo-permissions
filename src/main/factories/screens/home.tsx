@@ -15,7 +15,7 @@ import {
   createPortfolio,
 } from "../../store";
 
-export class DispatchCreatePortfolioAdapter implements CreatePortfolio {
+export class CreatePortfolioDispatchAdapter implements CreatePortfolio {
   constructor(private readonly dispatch: ReturnType<typeof useAppDispatch>) {}
 
   public async execute(
@@ -43,7 +43,7 @@ export function MakeHomeScreen() {
   console.log("🚀 ~ MakeHomeScreen ~ portfolios", portfolios);
 
   const _createPortfolio = React.useMemo(() => {
-    return new DispatchCreatePortfolioAdapter(dispatch);
+    return new CreatePortfolioDispatchAdapter(dispatch);
   }, [dispatch]);
 
   return <Home createPortfolio={_createPortfolio} portfolios={portfolios} />;
