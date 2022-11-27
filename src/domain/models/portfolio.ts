@@ -30,6 +30,24 @@ export class Portfolio {
     this.createdAt = props.createdAt;
   }
 
+  public static fromJSON(
+    json: Portfolio.JSON
+  ): Either<Portfolio.Errors, Portfolio> {
+    return Portfolio.create({
+      id: json.id,
+      title: json.title,
+      createdAt: new Date(json.createdAt),
+    });
+  }
+
+  public toJSON(): Portfolio.JSON {
+    return {
+      id: this.id,
+      title: this.title,
+      createdAt: this.createdAt.toISOString(),
+    };
+  }
+
   public readonly id: string;
   public readonly title: string;
   public readonly createdAt: Date;
@@ -50,5 +68,11 @@ export namespace Portfolio {
     id?: string;
     title: string;
     createdAt?: Date;
+  };
+
+  export type JSON = {
+    id: string;
+    title: string;
+    createdAt: string;
   };
 }

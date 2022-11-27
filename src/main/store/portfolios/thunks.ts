@@ -1,9 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Portfolio, MockedCreatePortfolio } from "../../../domain";
+
 import { PayloadCreatePortfolio } from "./types";
 
 export const createPortfolio = createAsyncThunk<
-  Portfolio,
+  Portfolio.JSON,
   PayloadCreatePortfolio,
   { rejectValue: Portfolio.Errors }
 >("portfolios/createPortfolio", async (portfolioCreateProps) => {
@@ -14,5 +15,5 @@ export const createPortfolio = createAsyncThunk<
     throw response.value;
   }
 
-  return JSON.parse(JSON.stringify(response.value));
+  return response.value.toJSON();
 });

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { DomainError } from "../../../domain";
 
 import { createPortfolio } from "./thunks";
 import { PortfolioState } from "./types";
@@ -28,10 +29,8 @@ export const portfoliosSlice = createSlice({
         state.portfolios.push(action.payload);
       });
     builder.addCase(createPortfolio.rejected, (state, action) => {
-      if (!action.payload) return;
-
       state.creation.status = "failed";
-      state.creation.error = action.payload;
+      state.creation.error = action.payload as DomainError;
     });
   },
 });

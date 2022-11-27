@@ -3,11 +3,11 @@ import { DomainError, Portfolio } from "../../../domain";
 export type PortfolioOperation = {
   status: "idle" | "pending" | "succeeded" | "failed";
   error: DomainError | null;
-  value: Portfolio | null;
+  value: Portfolio.JSON | null;
 };
 
 export type PortfolioState = {
-  portfolios: Portfolio[];
+  portfolios: Portfolio.JSON[];
   creation: PortfolioOperation;
 };
 
