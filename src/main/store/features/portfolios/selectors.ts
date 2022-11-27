@@ -21,7 +21,7 @@ export const portfoliosSelector = createSelector(
   (portfoliosInJSON) => {
     console.log("portfoliosSelector");
     return portfoliosInJSON
-      .map((innerPortfolioInJSON) => Portfolio.fromJSON(innerPortfolioInJSON))
+      .map(Portfolio.fromJSON)
       .filter((either) => either.isRight())
       .map((portfolio) => portfolio.value as Portfolio);
   }
