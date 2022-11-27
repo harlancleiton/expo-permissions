@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { Portfolio } from "../../../domain";
-import { RootState } from "../store";
+import { Portfolio } from "../../../../domain";
+import { RootState } from "../../store";
 
 export const selfPortfoliosSelector = (state: RootState) => {
   return state.portfolios;

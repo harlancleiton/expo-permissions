@@ -2,8 +2,12 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { createPortfolio, portfoliosSelector } from "../../main/store";
+import {
+  createPortfolio,
+  portfoliosSelector,
+  useAppDispatch,
+  useAppSelector,
+} from "../../main/store";
 
 export function Home() {
   const dispatch = useAppDispatch();
