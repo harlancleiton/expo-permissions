@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Portfolio, MockedCreatePortfolio } from "../../../../domain";
 
+import { Portfolio, MockedCreatePortfolio } from "../../../../domain";
 import { PayloadCreatePortfolio } from "./types";
 
 export const createPortfolio = createAsyncThunk<

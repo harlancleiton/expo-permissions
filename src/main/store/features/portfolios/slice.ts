@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { DomainError } from "../../../../domain/errors";
 
+import { DomainError } from "../../../../domain/errors";
 import { createPortfolio } from "./thunks";
 import { PortfolioState } from "./types";
 

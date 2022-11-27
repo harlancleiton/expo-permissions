@@ -1,4 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
+
 import { Portfolio } from "../../../../domain";
 import { RootState } from "../../store";
 
