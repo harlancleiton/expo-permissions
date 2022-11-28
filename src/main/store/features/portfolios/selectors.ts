@@ -4,14 +4,12 @@ import { Portfolio } from "../../../../domain";
 import { RootState } from "../../store";
 
 export const selfPortfoliosSelector = (state: RootState) => {
-  console.log("selfPortfoliosSelector");
   return state.portfolios;
 };
 
 export const portfoliosInJSONSelector = createSelector(
   selfPortfoliosSelector,
   (portfolios) => {
-    console.log("portfoliosInJSONSelector");
     return portfolios.portfolios;
   }
 );
@@ -19,7 +17,6 @@ export const portfoliosInJSONSelector = createSelector(
 export const portfoliosSelector = createSelector(
   portfoliosInJSONSelector,
   (portfoliosInJSON) => {
-    console.log("portfoliosSelector");
     return portfoliosInJSON
       .map(Portfolio.fromJSON)
       .filter((either) => either.isRight())
