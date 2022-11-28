@@ -1,24 +1,30 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
+import { CreatePortfolioContext } from "../../../domain";
 import { HomeProps } from "./types";
 
 export function Home(props: HomeProps) {
-  const { createPortfolio, portfolios } = props;
+  const { baseRequest, portfolios } = props;
 
   console.log("🚀 ~ Home ~ portfolios", portfolios);
 
-  React.useEffect(() => {
-    createPortfolio.execute({
-      title: "Lorem Ipsum",
-    });
-  }, [createPortfolio]);
+  async function handleAddPortfolio() {
+    const response = await baseRequest.handle(
+      CreatePortfolioContext.create({ title: "Lorem Ipsum" })
+    );
+
+    console.log("🚀 ~ Home ~ response", response.value);
+  }
 
   return (
     <View style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
+      <TouchableOpacity onPress={handleAddPortfolio}>
+        <Text>Criar</Text>
+      </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
   );

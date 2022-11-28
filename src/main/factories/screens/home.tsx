@@ -1,11 +1,16 @@
 import React from "react";
 
 import {
+  CanExecuteCreatePortfolio,
+  CheckPermission,
   CreatePortfolio,
   DomainError,
   left,
+  Permission,
+  PermissionOperation,
   Portfolio,
   PromiseEither,
+  UsecaseWrapper,
 } from "../../../domain";
 import { Home } from "../../../presentation";
 import {
@@ -17,6 +22,10 @@ import {
 
 export class CreatePortfolioDispatchAdapter implements CreatePortfolio {
   constructor(private readonly dispatch: ReturnType<typeof useAppDispatch>) {}
+
+  public readonly action = "create_portfolio";
+  public readonly resource = "portfolios";
+  public readonly operation = PermissionOperation.CREATE;
 
   public async execute(
     params: CreatePortfolio.Params
@@ -40,11 +49,28 @@ export function MakeHomeScreen() {
   const dispatch = useAppDispatch();
 
   const portfolios = useAppSelector(portfoliosSelector);
-  console.log("🚀 ~ MakeHomeScreen ~ portfolios", portfolios);
 
-  const _createPortfolio = React.useMemo(() => {
-    return new CreatePortfolioDispatchAdapter(dispatch);
-  }, [dispatch]);
+  const baseRequest = React.useMemo(() => {
+    const canExecuteCreatePortfolio = new CanExecuteCreatePortfolio(
+      portfolios.length,
+      [
+        Permission.create<Permission.CreatePortfolioMetadata>({
+          action: "create_portfolio",
+          operation: PermissionOperation.CREATE,
+          resource: "portfolios",
+          metadata: { count: 3 },
+        }).value as Permission<Permission.CreatePortfolioMetadata>,
+      ]
+    );
+    const checkPermission = new CheckPermission(canExecuteCreatePortfolio);
+    const usecaseWrapped = new UsecaseWrapper(
+      new CreatePortfolioDispatchAdapter(dispatch)
+    );
 
-  return <Home createPortfolio={_createPortfolio} portfolios={portfolios} />;
+    checkPermission.setNext(usecaseWrapped);
+
+    return checkPermission;
+  }, [dispatch, portfolios.length]);
+
+  return <Home baseRequest={baseRequest} portfolios={portfolios} />;
 }

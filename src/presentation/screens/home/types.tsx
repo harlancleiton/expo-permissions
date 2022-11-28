@@ -1,6 +1,7 @@
-import { CreatePortfolio, Portfolio } from "../../../domain";
+import { DomainError, Portfolio } from "../../../domain";
+import { BaseRequest } from "../../../domain";
 
 export type HomeProps = {
-  createPortfolio: CreatePortfolio;
+  baseRequest: BaseRequest<DomainError, Portfolio>;
   portfolios: Portfolio[];
 };
