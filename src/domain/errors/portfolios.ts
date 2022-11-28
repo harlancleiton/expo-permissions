@@ -13,6 +13,9 @@ export class PortfolioInvalidTitleError extends DomainError {
 
 export class PortfolioCreatedAtCannotBeInFutureError extends DomainError {
   constructor() {
-    super("CreatedAt cannot be in future", PortfolioError.InvalidTitle);
+    super(
+      "CreatedAt cannot be in future",
+      PortfolioError.CreatedAtCannotBeInFuture
+    );
   }
 }
