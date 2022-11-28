@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import { DomainError } from "../errors";
 import { Either, left, right } from "./either";
 
-export class Permission<M extends Permission.Metadata> {
+export class Permission<M extends Permission.Metadata = Permission.Metadata> {
   public static create<M extends Permission.Metadata>(
     props: Permission.CreateProps<M>
   ): Either<DomainError, Permission<M>> {
@@ -74,7 +74,7 @@ export namespace Permission {
     action: string;
     operation: PermissionOperation;
     resource: string;
-    metadata?: M;
+    metadata: M;
   };
 
   export type JSON = {
@@ -83,7 +83,10 @@ export namespace Permission {
     description: string;
   };
 
-  export type Metadata = CreatePortfolioMetadata | CreateConnectionMetadata;
+  export type Metadata =
+    | CreatePortfolioMetadata
+    | CreateConnectionMetadata
+    | undefined;
 
   export type CreatePortfolioMetadata = {
     count: number;

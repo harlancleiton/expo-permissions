@@ -5,8 +5,9 @@ import {
 import { PromiseEither, Portfolio, PermissionOperation } from "../models";
 import { BaseUsecase } from "./base-usecase";
 
-export interface CreatePortfolio extends BaseUsecase<CreatePortfolio.Output> {
-  action: "create";
+export interface CreatePortfolio
+  extends BaseUsecase<CreatePortfolio.Errors, Portfolio> {
+  action: "create_portfolio";
   resource: "portfolios";
   operation: PermissionOperation.CREATE;
 
