@@ -2,18 +2,23 @@ import {
   MaxNumberOfPortfoliosReachedError,
   PartnerIsNotAllowedError,
 } from "../errors/permission";
-import { PromiseEither, Portfolio } from "../models";
+import { PromiseEither, Portfolio, PermissionOperation } from "../models";
+import { BaseUsecase } from "./base-usecase";
 
-export interface CreatePortfolio {
-  execute(
-    props: CreatePortfolio.Params
-  ): PromiseEither<CreatePortfolio.Errors, Portfolio>;
+export interface CreatePortfolio extends BaseUsecase<CreatePortfolio.Output> {
+  action: "create";
+  resource: "portfolios";
+  operation: PermissionOperation.CREATE;
+
+  execute(props: CreatePortfolio.Params): CreatePortfolio.Output;
 }
 
 export namespace CreatePortfolio {
   export type Params = {
     title: string;
   };
+
+  export type Output = PromiseEither<CreatePortfolio.Errors, Portfolio>;
 
   export type Errors =
     | Portfolio.Errors
