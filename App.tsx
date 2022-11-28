@@ -1,9 +1,11 @@
 import "react-native-get-random-values";
-import React from "react";
-import { Provider as ReduxProvider } from "react-redux";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
+import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Provider as ReduxProvider } from "react-redux";
+
+import { StatusBar } from "expo-status-bar";
+
 import { Routes } from "./src/main/routes";
 import { store } from "./src/main/store/store";
 
