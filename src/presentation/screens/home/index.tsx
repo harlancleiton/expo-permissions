@@ -3,44 +3,52 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
-import { BaseRequestError, CreatePortfolioContext } from "../../../domain";
+import { CreatePortfolioContext } from "../../../domain";
+import { PromiseStatus } from "../../hooks";
+import useAsyncEither from "../../hooks/async-either/hook";
 import { HomeProps } from "./types";
 
 export function Home(props: HomeProps) {
-  const { createPortfolio: baseRequest, portfolios } = props;
+  const { createPortfolio, portfolios } = props;
 
-  console.log("🚀 ~ Home ~ portfolios", portfolios);
+  console.log("🚀 ~ Home ~ portfolios", portfolios, portfolios.length);
 
-  async function handleAddPortfolio() {
-    const response = await baseRequest.handle(
-      CreatePortfolioContext.create({ title: "Lorem Ipsum" })
+  const [state, handleCreatePortfolio] = useAsyncEither(
+    () =>
+      createPortfolio.handle(
+        CreatePortfolioContext.create({ title: "Lorem Ipsum" })
+      ),
+    [createPortfolio]
+  );
+
+  console.log("🚀 ~ Home ~ state", state);
+
+  const { status } = state;
+
+  function renderComponent() {
+    return (
+      <View style={styles.container}>
+        <Text>Open up App.tsx to start working on your app!</Text>
+        <TouchableOpacity onPress={handleCreatePortfolio}>
+          <Text>Criar</Text>
+        </TouchableOpacity>
+        <StatusBar style="auto" />
+      </View>
     );
-
-    console.log("🚀 ~ Home ~ response", response.value);
-
-    if (response.isRight()) return;
-
-    const error = response.value;
-
-    if (error instanceof BaseRequestError) {
-      const { suggestiveActions } = error;
-
-      console.log(
-        "🚀 ~ handleAddPortfolio ~ suggestiveActions",
-        suggestiveActions
-      );
-    }
   }
 
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <TouchableOpacity onPress={handleAddPortfolio}>
-        <Text>Criar</Text>
-      </TouchableOpacity>
-      <StatusBar style="auto" />
-    </View>
-  );
+  switch (status) {
+    case PromiseStatus.IDLE:
+      return renderComponent();
+    case PromiseStatus.PENDING:
+      return <Text>Carregando...</Text>; // <Loading />
+    case PromiseStatus.SUCCESS:
+      return renderComponent(); // <Success />
+    case PromiseStatus.ERROR:
+      return <Text>Erro</Text>; // <Error />
+    default:
+      renderComponent();
+  }
 }
 
 const styles = StyleSheet.create({
