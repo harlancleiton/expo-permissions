@@ -1,12 +1,16 @@
 import React from "react";
 
 import { Home } from "../../../presentation";
+import { CanExecuteProvider } from "../../../presentation/hooks";
 import {
   useAppDispatch,
   useAppSelector,
   portfoliosSelector,
 } from "../../store";
-import { makeCreatePortfolio } from "../usecases";
+import {
+  makeCanExecuteCreatePortfolio,
+  makeCreatePortfolio,
+} from "../usecases";
 
 export function MakeHomeScreen() {
   const dispatch = useAppDispatch();
@@ -17,5 +21,13 @@ export function MakeHomeScreen() {
     return makeCreatePortfolio(portfolios.length, dispatch);
   }, [dispatch, portfolios.length]);
 
-  return <Home createPortfolio={createPortfolio} portfolios={portfolios} />;
+  const canExecuteCreatePortfolio = React.useMemo(() => {
+    return makeCanExecuteCreatePortfolio(portfolios.length);
+  }, [portfolios.length]);
+
+  return (
+    <CanExecuteProvider canExecute={canExecuteCreatePortfolio}>
+      <Home createPortfolio={createPortfolio} portfolios={portfolios} />
+    </CanExecuteProvider>
+  );
 }

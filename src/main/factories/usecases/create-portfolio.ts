@@ -15,14 +15,22 @@ const CREATE_MAX_3_PORTFOLIOS =
     metadata: { count: 3 },
   }).value as Permission<Permission.CreatePortfolioMetadata>;
 
+// TODO criar aquivo
+export function makeCanExecuteCreatePortfolio(
+  totalPortfolios: number
+): CanExecuteCreatePortfolio {
+  return new CanExecuteCreatePortfolio(totalPortfolios, [
+    CREATE_MAX_3_PORTFOLIOS,
+  ]);
+}
+
 export function makeCreatePortfolio(
   totalPortfolios: number,
   dispatch: ReturnType<typeof useAppDispatch>
 ) {
-  const canExecuteCreatePortfolio = new CanExecuteCreatePortfolio(
-    totalPortfolios,
-    [CREATE_MAX_3_PORTFOLIOS]
-  );
+  const canExecuteCreatePortfolio =
+    makeCanExecuteCreatePortfolio(totalPortfolios);
+
   const checkPermission = new CheckPermission(canExecuteCreatePortfolio);
   const usecaseWrapped = new UsecaseWrapper(
     new CreatePortfolioDispatchAdapter(dispatch)
