@@ -49,7 +49,7 @@ export class CanExecuteCreatePortfolio implements CanExecute {
         SuggestiveAction.create({
           title: "Assine o Kinvo Premium",
           message: "Esse recurso está disponível apenas para assinantes",
-          action: SuggestiveActionType.UPGRADE_PLAN,
+          action: SuggestiveActionType.SUBSCRIBE,
         }).value as SuggestiveAction,
       ],
     });

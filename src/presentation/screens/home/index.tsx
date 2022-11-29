@@ -7,7 +7,7 @@ import { BaseRequestError, CreatePortfolioContext } from "../../../domain";
 import { HomeProps } from "./types";
 
 export function Home(props: HomeProps) {
-  const { baseRequest, portfolios } = props;
+  const { createPortfolio: baseRequest, portfolios } = props;
 
   console.log("🚀 ~ Home ~ portfolios", portfolios);
 
