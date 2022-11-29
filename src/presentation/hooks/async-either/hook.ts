@@ -83,7 +83,7 @@ export default function useAsyncEither<
       }) as ReturnType<T>;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    deps
+    [state.status, ...deps]
   );
 
   return [state, callback as unknown as T];
