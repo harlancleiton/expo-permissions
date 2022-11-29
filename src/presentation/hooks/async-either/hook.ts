@@ -5,7 +5,6 @@ import useMountedState from "../mounted/hook";
 import {
   State,
   PromiseStatus,
-  Action,
   AsyncEitherReturn,
   FunctionReturningPromiseEither,
   StateFromFunctionReturningPromiseEither,
