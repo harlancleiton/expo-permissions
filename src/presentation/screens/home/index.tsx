@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
-import { CreatePortfolioContext } from "../../../domain";
+import { BaseRequestError, CreatePortfolioContext } from "../../../domain";
 import { HomeProps } from "./types";
 
 export function Home(props: HomeProps) {
@@ -17,6 +17,19 @@ export function Home(props: HomeProps) {
     );
 
     console.log("🚀 ~ Home ~ response", response.value);
+
+    if (response.isRight()) return;
+
+    const error = response.value;
+
+    if (error instanceof BaseRequestError) {
+      const { suggestiveActions } = error;
+
+      console.log(
+        "🚀 ~ handleAddPortfolio ~ suggestiveActions",
+        suggestiveActions
+      );
+    }
   }
 
   return (
