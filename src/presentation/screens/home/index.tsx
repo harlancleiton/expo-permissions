@@ -3,15 +3,29 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
-import { CreatePortfolioContext } from "../../../domain";
-import { PromiseStatus } from "../../hooks";
+import {
+  CreatePortfolioContext,
+  ExecuteAction,
+  PermissionOperation,
+} from "../../../domain";
+import { PromiseStatus, useCanExecute } from "../../hooks";
 import useAsyncEither from "../../hooks/async-either/hook";
 import { HomeProps } from "./types";
 
 export function Home(props: HomeProps) {
   const { createPortfolio, portfolios } = props;
 
-  console.log("🚀 ~ Home ~ portfolios", portfolios, portfolios.length);
+  const {
+    data: permissionAllow,
+    error: permissionDeny,
+    status: statusFromCanExecute,
+  } = useCanExecute(
+    ExecuteAction.create({
+      action: "create_portfolio",
+      operation: PermissionOperation.CREATE,
+      resource: "portfolio",
+    }).value as ExecuteAction
+  );
 
   const [state, handleCreatePortfolio] = useAsyncEither(
     () =>
@@ -21,14 +35,45 @@ export function Home(props: HomeProps) {
     [createPortfolio]
   );
 
-  console.log("🚀 ~ Home ~ state", state);
-
   const { status } = state;
+
+  function renderPermission() {
+    if (statusFromCanExecute === PromiseStatus.PENDING) {
+      return <Text>Checking permission...</Text>;
+    }
+
+    if (permissionDeny) {
+      const { suggestiveActions } = permissionDeny;
+
+      if (!suggestiveActions.length) {
+        return <Text>Permission Deny!</Text>;
+      }
+
+      const suggestiveAction = suggestiveActions[0];
+
+      return (
+        <View>
+          <Text>Permission Deny!</Text>
+          <Text>{suggestiveAction.title}</Text>
+          <Text>{suggestiveAction.message}</Text>
+          <Text>{suggestiveAction.action}</Text>
+        </View>
+      );
+    }
+
+    if (permissionAllow) {
+      return <Text>Permission allowed!</Text>;
+    }
+  }
 
   function renderComponent() {
     return (
       <View style={styles.container}>
         <Text>Open up App.tsx to start working on your app!</Text>
+        <Text>Você tem {portfolios.length} carteiras</Text>
+
+        {renderPermission()}
+
         <TouchableOpacity style={styles.button} onPress={handleCreatePortfolio}>
           <Text>Criar</Text>
         </TouchableOpacity>
@@ -47,7 +92,7 @@ export function Home(props: HomeProps) {
     case PromiseStatus.ERROR:
       return <Text>Erro</Text>; // <Error />
     default:
-      renderComponent();
+      return renderComponent();
   }
 }
 
