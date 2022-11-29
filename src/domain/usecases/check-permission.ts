@@ -17,7 +17,7 @@ export class CheckPermission<
   ): PromiseEither<Errors | BaseRequest.Errors, ReturnType> {
     console.log("🚀 CheckPermission ~ handle ~ context", context);
 
-    const recurrenceExecute = await this.canExecute.execute(context);
+    const recurrenceExecute = this.canExecute.execute(context);
 
     if (recurrenceExecute.isRight()) {
       return super.handle(context);

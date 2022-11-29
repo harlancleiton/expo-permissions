@@ -1,9 +1,9 @@
 import { SuggestiveActionType } from "../enums";
 import {
+  Either,
   ExecuteAction,
   left,
   Permission,
-  PromiseEither,
   RecurrenceExecute,
   right,
   SuggestiveAction,
@@ -22,9 +22,9 @@ export class CanExecuteCreatePortfolio implements CanExecute {
     this.#permissions = permissions;
   }
 
-  public async execute(
+  public execute(
     context: ExecuteAction
-  ): PromiseEither<RecurrenceExecute, RecurrenceExecute> {
+  ): Either<RecurrenceExecute, RecurrenceExecute> {
     console.log("🚀 ~ CanExecuteCreatePortfolio ~ execute ~ context", context);
 
     const createPortfolioPermission = this.#permissions.find(

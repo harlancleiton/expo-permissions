@@ -1,7 +1,5 @@
-import { ExecuteAction, PromiseEither, RecurrenceExecute } from "../models";
+import { Either, ExecuteAction, RecurrenceExecute } from "../models";
 
 export interface CanExecute {
-  execute(
-    context: ExecuteAction
-  ): PromiseEither<RecurrenceExecute, RecurrenceExecute>;
+  execute(context: ExecuteAction): Either<RecurrenceExecute, RecurrenceExecute>;
 }

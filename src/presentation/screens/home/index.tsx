@@ -7,6 +7,8 @@ import {
   CreatePortfolioContext,
   ExecuteAction,
   PermissionOperation,
+  RecurrenceExecute,
+  Right,
 } from "../../../domain";
 import { PromiseStatus, useCanExecute } from "../../hooks";
 import useAsyncEither from "../../hooks/async-either/hook";
@@ -15,11 +17,7 @@ import { HomeProps } from "./types";
 export function Home(props: HomeProps) {
   const { createPortfolio, portfolios } = props;
 
-  const {
-    data: permissionAllow,
-    error: permissionDeny,
-    status: statusFromCanExecute,
-  } = useCanExecute(
+  const recurrenceExecute = useCanExecute(
     ExecuteAction.create({
       action: "create_portfolio",
       operation: PermissionOperation.CREATE,
@@ -38,11 +36,8 @@ export function Home(props: HomeProps) {
   const { status } = state;
 
   function renderPermission() {
-    if (statusFromCanExecute === PromiseStatus.PENDING) {
-      return <Text>Checking permission...</Text>;
-    }
-
-    if (permissionDeny) {
+    if (recurrenceExecute.isLeft()) {
+      const permissionDeny = recurrenceExecute.value;
       const { suggestiveActions } = permissionDeny;
 
       if (!suggestiveActions.length) {
@@ -61,6 +56,9 @@ export function Home(props: HomeProps) {
       );
     }
 
+    const permissionAllow = (
+      recurrenceExecute as Right<RecurrenceExecute, RecurrenceExecute>
+    ).value;
     if (permissionAllow) {
       return <Text>Permission allowed!</Text>;
     }

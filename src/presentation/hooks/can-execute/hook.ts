@@ -1,24 +1,22 @@
 import React from "react";
 
-import { ExecuteAction, RecurrenceExecute } from "../../../domain/models";
-import { State } from "../async-either";
-import useAsyncEither from "../async-either/hook";
+import {
+  Either,
+  ExecuteAction,
+  RecurrenceExecute,
+} from "../../../domain/models";
 import { CanExecuteContext } from "./context";
 
 export function useCanExecute(
   context: ExecuteAction
-): State<RecurrenceExecute, RecurrenceExecute> {
+): Either<RecurrenceExecute, RecurrenceExecute> {
   const { canExecute } = React.useContext(CanExecuteContext);
   const refContext = React.useRef(context);
 
-  const [state, handleCanExecute] = useAsyncEither(
+  const either = React.useMemo(
     () => canExecute.execute(refContext.current),
     [canExecute]
   );
 
-  React.useEffect(() => {
-    handleCanExecute();
-  }, [handleCanExecute]);
-
-  return state;
+  return either;
 }
