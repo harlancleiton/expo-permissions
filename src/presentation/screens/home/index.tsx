@@ -29,7 +29,7 @@ export function Home(props: HomeProps) {
     return (
       <View style={styles.container}>
         <Text>Open up App.tsx to start working on your app!</Text>
-        <TouchableOpacity onPress={handleCreatePortfolio}>
+        <TouchableOpacity style={styles.button} onPress={handleCreatePortfolio}>
           <Text>Criar</Text>
         </TouchableOpacity>
         <StatusBar style="auto" />
@@ -57,5 +57,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  button: {
+    borderRadius: 8,
+    width: 120,
+    backgroundColor: "#c9c9c9",
+    padding: 20,
+    alignItems: "center",
   },
 });

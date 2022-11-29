@@ -9,6 +9,7 @@ import {
   AsyncEitherReturn,
   FunctionReturningPromiseEither,
   StateFromFunctionReturningPromiseEither,
+  ActionFromFunctionReturningPromiseEither,
 } from "./types";
 
 const INITIAL_STATE: State<any, any> = {
@@ -17,10 +18,12 @@ const INITIAL_STATE: State<any, any> = {
   error: null,
 };
 
-const eitherReducer = <L, A>(
-  prevState: State<L, A>,
-  action: Action<L, A>
-): State<L, A> => {
+const eitherReducer = <
+  T extends FunctionReturningPromiseEither = FunctionReturningPromiseEither
+>(
+  prevState: StateFromFunctionReturningPromiseEither<T>,
+  action: ActionFromFunctionReturningPromiseEither<T>
+): StateFromFunctionReturningPromiseEither<T> => {
   switch (action.type) {
     case PromiseStatus.IDLE:
       return INITIAL_STATE;
@@ -52,18 +55,15 @@ export default function useAsyncEither<
 >(fn: T, deps: DependencyList = []): AsyncEitherReturn<T> {
   const lastCallId = React.useRef(0);
   const isMounted = useMountedState();
-  const [state, setState] = React.useState<
-    StateFromFunctionReturningPromiseEither<T>
-  >({
-    status: PromiseStatus.IDLE,
-  });
+
+  const [state, dispatch] = React.useReducer(eitherReducer, INITIAL_STATE);
 
   const callback = React.useCallback(
     (...args: Parameters<T>): ReturnType<T> => {
       const callId = ++lastCallId.current;
 
       if (state.status !== PromiseStatus.PENDING) {
-        setState({ status: PromiseStatus.PENDING });
+        dispatch({ type: PromiseStatus.PENDING });
       }
 
       return fn(...args).then((either) => {
@@ -72,14 +72,11 @@ export default function useAsyncEither<
         if (callId !== lastCallId.current) return either.value;
 
         if (either.isLeft()) {
-          setState({
-            status: PromiseStatus.ERROR,
-            error: either.value,
-          });
+          dispatch({ type: PromiseStatus.ERROR, payload: either.value });
         } else {
-          setState({
-            data: (either as Right<any, any>).value,
-            status: PromiseStatus.SUCCESS,
+          dispatch({
+            type: PromiseStatus.SUCCESS,
+            payload: (either as Right<any, any>).value,
           });
         }
 

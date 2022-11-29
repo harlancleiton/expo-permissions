@@ -43,3 +43,7 @@ export type StateFromFunctionReturningPromiseEither<
 export type AsyncEitherReturn<
   T extends FunctionReturningPromiseEither = FunctionReturningPromiseEither
 > = [StateFromFunctionReturningPromiseEither<T>, T];
+
+export type ActionFromFunctionReturningPromiseEither<
+  T extends FunctionReturningPromiseEither
+> = Action<PromiseEitherLeft<ReturnType<T>>, PromiseEitherRight<ReturnType<T>>>;
