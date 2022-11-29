@@ -27,7 +27,9 @@ export abstract class BaseRequest<
       return this.next.handle(context);
     }
 
-    return left(new BaseRequestError("Unhandled request", BaseRequest.name));
+    return left(
+      new BaseRequestError("Unhandled request", [], BaseRequest.name)
+    );
   }
 }
 
