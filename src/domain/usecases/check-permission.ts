@@ -1,5 +1,5 @@
 import { BaseRequestError, DomainError } from "../errors";
-import { left, PromiseEither, SuggestiveAction } from "../models";
+import { Left, left, PromiseEither, SuggestiveAction } from "../models";
 import { RequestContext } from "../requests";
 import { BaseRequest } from "./base-request";
 import { CanExecute } from "./can-execute";
@@ -23,9 +23,9 @@ export class CheckPermission<
       return super.handle(context);
     }
 
-    const suggestiveActions: SuggestiveAction[] =
-      // @ts-ignore
-      recurrenceExecute.value.suggestiveActions;
+    const suggestiveActions: SuggestiveAction[] = (
+      recurrenceExecute as Left<Errors | BaseRequest.Errors, ReturnType>
+    ).value.suggestiveActions;
 
     return left(
       new BaseRequestError(
