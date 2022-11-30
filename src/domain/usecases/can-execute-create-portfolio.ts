@@ -14,12 +14,11 @@ export class CanExecuteCreatePortfolio implements CanExecute {
   #totalPortfolios = 0;
   #permissions: Permission<Permission.CreatePortfolioMetadata>[] = [];
 
-  constructor(
-    totalPortfolios: number,
-    permissions: Permission<Permission.CreatePortfolioMetadata>[]
-  ) {
+  constructor(totalPortfolios: number, permissions: Permission[]) {
     this.#totalPortfolios = totalPortfolios;
-    this.#permissions = permissions;
+    // TODO fix generics
+    this.#permissions =
+      permissions as Permission<Permission.CreatePortfolioMetadata>[];
   }
 
   public execute(

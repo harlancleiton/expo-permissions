@@ -1,35 +1,28 @@
 import {
   CanExecuteCreatePortfolio,
   Permission,
-  PermissionOperation,
   CheckPermission,
   UsecaseWrapper,
 } from "../../../domain";
 import { CreatePortfolioDispatchAdapter, useAppDispatch } from "../../store";
 
-const CREATE_MAX_3_PORTFOLIOS =
-  Permission.create<Permission.CreatePortfolioMetadata>({
-    action: "create_portfolio",
-    operation: PermissionOperation.CREATE,
-    resource: "portfolios",
-    metadata: { count: 3 },
-  }).value as Permission<Permission.CreatePortfolioMetadata>;
-
 // TODO criar aquivo
 export function makeCanExecuteCreatePortfolio(
-  totalPortfolios: number
+  totalPortfolios: number,
+  permissions: Permission[]
 ): CanExecuteCreatePortfolio {
-  return new CanExecuteCreatePortfolio(totalPortfolios, [
-    CREATE_MAX_3_PORTFOLIOS,
-  ]);
+  return new CanExecuteCreatePortfolio(totalPortfolios, permissions);
 }
 
 export function makeCreatePortfolio(
   totalPortfolios: number,
+  permissions: Permission[],
   dispatch: ReturnType<typeof useAppDispatch>
 ) {
-  const canExecuteCreatePortfolio =
-    makeCanExecuteCreatePortfolio(totalPortfolios);
+  const canExecuteCreatePortfolio = makeCanExecuteCreatePortfolio(
+    totalPortfolios,
+    permissions
+  );
 
   const checkPermission = new CheckPermission(canExecuteCreatePortfolio);
   const usecaseWrapped = new UsecaseWrapper(

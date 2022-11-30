@@ -6,6 +6,7 @@ import {
   useAppDispatch,
   useAppSelector,
   portfoliosSelector,
+  permissionsSelector,
 } from "../../store";
 import {
   makeCanExecuteCreatePortfolio,
@@ -16,14 +17,15 @@ export function MakeHomeScreen() {
   const dispatch = useAppDispatch();
 
   const portfolios = useAppSelector(portfoliosSelector);
+  const permissions = useAppSelector(permissionsSelector);
 
   const createPortfolio = React.useMemo(() => {
-    return makeCreatePortfolio(portfolios.length, dispatch);
-  }, [dispatch, portfolios.length]);
+    return makeCreatePortfolio(portfolios.length, permissions, dispatch);
+  }, [dispatch, permissions, portfolios.length]);
 
   const canExecuteCreatePortfolio = React.useMemo(() => {
-    return makeCanExecuteCreatePortfolio(portfolios.length);
-  }, [portfolios.length]);
+    return makeCanExecuteCreatePortfolio(portfolios.length, permissions);
+  }, [permissions, portfolios.length]);
 
   return (
     <CanExecuteProvider canExecute={canExecuteCreatePortfolio}>

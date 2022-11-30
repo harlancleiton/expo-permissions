@@ -10,8 +10,7 @@ import {
   RecurrenceExecute,
   Right,
 } from "../../../domain";
-import { PromiseStatus, useCanExecute } from "../../hooks";
-import useAsyncEither from "../../hooks/async-either/hook";
+import { PromiseStatus, useAsyncEither, useCanExecute } from "../../hooks";
 import { HomeProps } from "./types";
 
 export function Home(props: HomeProps) {

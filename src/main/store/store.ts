@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { portfoliosSlice } from "./features";
-import { permissionsSlice } from "./features/permissions";
+import { permissionsSlice, portfoliosSlice } from "./features";
 
 export const store = configureStore({
   reducer: {

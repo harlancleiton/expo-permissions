@@ -49,9 +49,10 @@ const eitherReducer = <
   }
 };
 
-export default function useAsyncEither<
-  T extends FunctionReturningPromiseEither
->(fn: T, deps: DependencyList = []): AsyncEitherReturn<T> {
+export function useAsyncEither<T extends FunctionReturningPromiseEither>(
+  fn: T,
+  deps: DependencyList = []
+): AsyncEitherReturn<T> {
   const lastCallId = React.useRef(0);
   const isMounted = useMountedState();
 
