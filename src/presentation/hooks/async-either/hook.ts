@@ -23,6 +23,13 @@ const eitherReducer = <
   prevState: StateFromFunctionReturningPromiseEither<T>,
   action: ActionFromFunctionReturningPromiseEither<T>
 ): StateFromFunctionReturningPromiseEither<T> => {
+  const statusIsPending = action.type === PromiseStatus.PENDING;
+  const prevStatusIsPending = prevState.status === PromiseStatus.PENDING;
+
+  if (statusIsPending && prevStatusIsPending) {
+    return prevState;
+  }
+
   switch (action.type) {
     case PromiseStatus.IDLE:
       return INITIAL_STATE;
@@ -62,9 +69,7 @@ export function useAsyncEither<T extends FunctionReturningPromiseEither>(
     (...args: Parameters<T>): ReturnType<T> => {
       const callId = ++lastCallId.current;
 
-      if (state.status !== PromiseStatus.PENDING) {
-        dispatch({ type: PromiseStatus.PENDING });
-      }
+      dispatch({ type: PromiseStatus.PENDING });
 
       return fn(...args).then((either) => {
         if (!isMounted()) return either.value;
@@ -84,7 +89,7 @@ export function useAsyncEither<T extends FunctionReturningPromiseEither>(
       }) as ReturnType<T>;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state.status, ...deps]
+    deps
   );
 
   return [state, callback as unknown as T];
