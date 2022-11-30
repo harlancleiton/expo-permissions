@@ -17,25 +17,22 @@ export class UsecaseWrapper<
   ): PromiseEither<LeftReturn | BaseRequest.Errors, RightReturn> {
     console.log("🚀 UsecaseWrapper ~ handle ~ context", context);
 
-    const thisUsecaseMustHandleThisAction = (() => {
-      const isSomeAction = this.usecase.action === context.action;
-      const isSomeResource = this.usecase.resource === context.resource;
-      const isSomeOperation = this.usecase.operation === context.operation;
-
-      return isSomeAction && isSomeResource && isSomeOperation;
-    })();
-
-    console.log(
-      "🚀 ~ UsecaseWrapper ~ handle ~ thisUsecaseMustHandleThisAction",
-      thisUsecaseMustHandleThisAction
-    );
-
-    if (thisUsecaseMustHandleThisAction) {
+    if (this.thisUsecaseMustHandleThisAction(context)) {
       return this.usecase.execute(context.data);
     }
 
     return Promise.resolve(
-      left(new BaseRequestError("Unhandled request", UsecaseWrapper.name))
+      left(new BaseRequestError("Unhandled request", [], UsecaseWrapper.name))
     );
+  }
+
+  private thisUsecaseMustHandleThisAction<RequestArgs>(
+    context: RequestContext<RequestArgs>
+  ): boolean {
+    const isSomeAction = this.usecase.action === context.action;
+    const isSomeResource = this.usecase.resource === context.resource;
+    const isSomeOperation = this.usecase.operation === context.operation;
+
+    return isSomeAction && isSomeResource && isSomeOperation;
   }
 }

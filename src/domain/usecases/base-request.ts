@@ -21,8 +21,6 @@ export abstract class BaseRequest<
   public async handle<RequestArgs = any>(
     context: RequestContext<RequestArgs>
   ): PromiseEither<LeftReturn | BaseRequest.Errors, RightReturn> {
-    console.log("🚀 BaseRequest ~ handle ~ context", context);
-
     if (this.next) {
       return this.next.handle(context);
     }
