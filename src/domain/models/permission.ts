@@ -33,6 +33,23 @@ export class Permission<M extends Permission.Metadata = Permission.Metadata> {
     );
   }
 
+  public static fromJSON<M extends Permission.Metadata = Permission.Metadata>(
+    json: Permission.JSON<M>
+  ): Either<DomainError, Permission> {
+    return Permission.create<M>(json);
+  }
+
+  public toJSON(): Permission.JSON<M> {
+    return {
+      id: this.id,
+      action: this.action,
+      operation: this.operation,
+      resource: this.resource,
+      slug: this.slug,
+      metadata: this.metadata,
+    };
+  }
+
   private constructor(props: Permission.Props<M>) {
     const { action, id, operation, resource, slug, metadata } = props;
 
@@ -60,7 +77,7 @@ export enum PermissionOperation {
 }
 
 export namespace Permission {
-  export type Props<M extends Metadata> = {
+  export type Props<M extends Metadata = Metadata> = {
     id: string;
     action: string; // create_portfolio
     operation: PermissionOperation; // PermissionOperation.CREATE
@@ -69,23 +86,27 @@ export namespace Permission {
     metadata?: M;
   };
 
-  export type CreateProps<M extends Metadata> = {
+  export type CreateProps<M extends Metadata = Metadata> = {
     id?: string;
     action: string;
     operation: PermissionOperation;
     resource: string;
-    metadata: M;
+    metadata?: M;
   };
 
-  export type JSON = {
+  export type JSON<M extends Metadata = Metadata> = {
     id: string;
-    name: string;
-    description: string;
+    action: string;
+    operation: PermissionOperation;
+    resource: string;
+    slug: string;
+    metadata?: M;
   };
 
   export type Metadata =
     | CreatePortfolioMetadata
     | CreateConnectionMetadata
+    | Record<string, unknown>
     | undefined;
 
   export type CreatePortfolioMetadata = {
