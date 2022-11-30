@@ -1,4 +1,4 @@
-import { DomainError, Portfolio } from "../../../domain";
+import { DomainError, Portfolio } from "../../../../domain";
 
 export type PortfolioOperation = {
   status: "idle" | "pending" | "succeeded" | "failed";
