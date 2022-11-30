@@ -4,5 +4,7 @@ export * from "./can-execute";
 export * from "./can-execute-create-portfolio";
 export * from "./check-permission";
 export * from "./create-portfolio";
+export * from "./get-permissions";
 export * from "./mocked-create-portfolio";
+export * from "./mocked-get-permissions";
 export * from "./usecase-wrapper";
