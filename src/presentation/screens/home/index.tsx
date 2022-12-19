@@ -32,8 +32,6 @@ export function Home(props: HomeProps) {
     [createPortfolio]
   );
 
-  const { status } = state;
-
   function renderPermission() {
     if (recurrenceExecute.isLeft()) {
       const permissionDeny = recurrenceExecute.value;
@@ -78,6 +76,8 @@ export function Home(props: HomeProps) {
       </View>
     );
   }
+
+  const { status } = state;
 
   switch (status) {
     case PromiseStatus.IDLE:

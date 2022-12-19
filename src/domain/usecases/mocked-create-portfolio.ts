@@ -12,7 +12,7 @@ export class MockedCreatePortfolio implements CreatePortfolio {
   }: CreatePortfolio.Params): CreatePortfolio.Output {
     const response = Portfolio.create({ title });
 
-    await sleep(getRandomInt(1000, 5000));
+    await sleep(getRandomInt(1000, 3000));
 
     return response;
   }

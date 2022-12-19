@@ -9,11 +9,11 @@ export const createPortfolio = createAsyncThunk<
   { rejectValue: Portfolio.Errors }
 >("portfolios/createPortfolio", async (portfolioCreateProps) => {
   const _createPortfolio = new MockedCreatePortfolio();
-  const response = await _createPortfolio.execute(portfolioCreateProps);
+  const portfolioOrError = await _createPortfolio.execute(portfolioCreateProps);
 
-  if (response.isLeft()) {
-    throw response.value;
+  if (portfolioOrError.isLeft()) {
+    throw portfolioOrError.value;
   }
 
-  return response.value.toJSON();
+  return portfolioOrError.value.toJSON();
 });

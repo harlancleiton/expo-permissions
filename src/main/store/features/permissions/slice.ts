@@ -22,6 +22,7 @@ export const permissionsSlice = createSlice({
       state.list.status = "pending";
       state.list.value = [];
       state.list.error = null;
+      state.permissions = [];
     }),
       builder.addCase(getPermissions.fulfilled, (state, action) => {
         state.list.status = "succeeded";

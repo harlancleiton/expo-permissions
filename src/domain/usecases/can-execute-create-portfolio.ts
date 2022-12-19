@@ -11,7 +11,7 @@ import {
 import { CanExecute } from "./can-execute";
 
 export class CanExecuteCreatePortfolio implements CanExecute {
-  #totalPortfolios = 0;
+  #totalPortfolios: number;
   #permissions: Permission<Permission.CreatePortfolioMetadata>[] = [];
 
   constructor(totalPortfolios: number, permissions: Permission[]) {

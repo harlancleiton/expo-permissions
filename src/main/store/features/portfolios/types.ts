@@ -1,7 +1,7 @@
 import { DomainError, Portfolio } from "../../../../domain";
 
 export type PortfolioOperation = {
-  status: "idle" | "pending" | "succeeded" | "failed";
+  status: "idle" | "pending" | "success" | "failed";
   error: DomainError | null;
   value: Portfolio.JSON | null;
 };

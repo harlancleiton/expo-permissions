@@ -24,7 +24,7 @@ export const portfoliosSlice = createSlice({
       state.creation.error = null;
     }),
       builder.addCase(createPortfolio.fulfilled, (state, action) => {
-        state.creation.status = "succeeded";
+        state.creation.status = "success";
         state.creation.value = action.payload;
         state.portfolios.push(action.payload);
       });
